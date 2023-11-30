@@ -1,0 +1,94 @@
+create database netflix;
+
+
+create table user(
+ user_id int primary key ,
+    user_name varchar(20) not null ,
+    email varchar(20) unique not null ,
+    password varchar(20) not null
+);
+
+
+create table profile(
+    profile_id int primary key ,
+    user_id int ,
+    foreign key (user_id) references user(user_id),
+    name varchar(20) not null ,
+    crated_at datetime default current_timestamp
+);
+
+create table subscription(
+    subscription_id int primary key ,
+    profile_id int ,
+    foreign key (profile_id) references profile(profile_id),
+    subscription_state varchar(7) check ( subscription_state ='valid' or subscription_state='invalid' ),
+    subscription_expired date
+);
+
+
+create table  movie (
+    movie_id int primary key ,
+    subscription_id int ,
+    foreign key (subscription_id) references  subscription(subscription_id),
+    title varchar(20) not null ,
+    genre varchar(20) not null ,
+    summary varchar(100) not null ,
+    duration int not null ,
+    release_date date
+);
+
+create table  shows (
+    shows_id int primary key ,
+    subscription_id int ,
+    foreign key (subscription_id) references  subscription(subscription_id),
+    title varchar(20) not null ,
+    genre varchar(20) not null ,
+    summary varchar(100) not null ,
+    episodes int not null ,
+    seasons int not null ,
+    release_date date
+);
+
+
+insert into user values (1,'khalid','khalid@gamil.com','kA135212');
+insert into user values (2,'faisal','faisal@gamil.com','ff1412');
+insert into user values (3,'abdulaziz','abdulziz@gamil.com','aziz34234.');
+
+insert into profile (profile_id, user_id, name) values (1,1,'khalid231');
+insert into profile (profile_id, user_id, name) values (2,2,'fa351');
+insert into profile (profile_id, user_id, name) values (4,3,'aziz4389');
+
+insert into subscription values (1,1,'valid','2024-12-3');
+insert into subscription values (2,2,'invalid','2023-11-3');
+insert into subscription values (3,4,'valid','2024-6-3');
+
+insert into movie values (1,1,'friday 13','horror','killer',120,'2022-7-2');
+insert into movie values (2,2,'matrix','action','action movie',140,'2000-7-2');
+insert into movie values (3,3,'finding nemo','family-animation','nemo father try to find nemo',120,'205-1-6');
+
+insert into shows values (1,1,'the office','comedy','mockumentary sitcom ',200,9,'2005-5-3');
+insert into shows values (2,2,'breaking bad','drama-action','about walter white good teacher change',50,5,'2006-7-23');
+insert into shows values (3,3,'the boys','action - superheros','the reality about he superheros ',40,4,'2021-1-14');
+
+
+update profile set name ='faisalx' where profile_id=2;
+
+update subscription set subscription_state = 'invalid' where subscription_id = 3;
+
+update  movie set duration = 90 where movie_id = 3;
+
+update shows set title = 'the big bang show' , genre ='comedy' , summary='life about four awkward friends' , seasons=12,episodes=120 where shows_id =3;
+
+
+delete from shows where shows_id =2;
+delete from movie where movie_id=2;
+delete from subscription where  subscription_id=2;
+
+delete from profile where profile_id=2;
+delete from user where user_id=2;
+
+select * from user;
+select * from profile;
+select * from subscription;
+select * from movie;
+select * from shows;
